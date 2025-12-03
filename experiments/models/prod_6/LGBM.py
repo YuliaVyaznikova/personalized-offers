@@ -81,7 +81,7 @@ print("=" * 50)
         
 best_params = study.best_params
     
-num_cols, cat_cols = type_of_feature(df, best_params['threshold'])
+num_cols, cat_cols = type_of_feature(df, 20)
     
 # Удаляем ненужные названия столбцов
 cat_cols = cat_cols[3:-1]
