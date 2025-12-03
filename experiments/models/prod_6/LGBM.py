@@ -109,7 +109,7 @@ final_model.fit(x_train_enc, y_train)
 
 #смотрим на результат
 y_pred = final_model.predict_proba(x_oot_enc)[:, 1]
-metric_report(y_oot, y_pred)
+print(metric_report(y_oot, y_pred))
 
 
 """
