@@ -6,7 +6,6 @@ def target_constructor(df, id_product):
     """
     Разделяет данные для конкретного product_id на Train (прошлые месяцы) и OOT (последний месяц).
     """
-
     # Фильтруем датасет по нужному продукту
     df_prod = df[df['product_id'] == id_product].copy()
 
@@ -78,7 +77,3 @@ def target_constructor(df, id_product):
     print("=" * 60 + "\n")
 
     return x_train, y_train, x_oot, y_oot
-
-
-
-x_train, y_train, x_oot, y_oot = target_constructor(df, 10)
