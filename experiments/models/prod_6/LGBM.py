@@ -80,12 +80,7 @@ print("=" * 50)
         
         
 best_params = study.best_params
-    
-num_cols, cat_cols = type_of_feature(df, 20)
-    
-# Удаляем ненужные названия столбцов
-cat_cols = cat_cols[3:-1]
-    
+
 # Преобразуем категориальные признаки
 target_encoder = ce.TargetEncoder(cols=cat_cols, smoothing=best_params['smoothing'])
 x_train_enc = target_encoder.fit_transform(x_train, y_train)
