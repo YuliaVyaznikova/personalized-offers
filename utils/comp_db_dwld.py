@@ -54,12 +54,32 @@ def process_incremental(file_path, product_id):
         print("⚠️  Нет данных после фильтрации")
         return pd.DataFrame()
     
-def read_rc(id):
-    """Читает список необходимых колонок из файла"""
+import os
+import pandas as pd
+
+def read_rc(id_product):
+    """Читает список колонок из колонки dropped_feature файла rfe_metrics_history_{id_product}"""
     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    file_path = os.path.join(project_root, "utils", "best_feature", f"prod_{id}.csv")
     
-    with open(file_path, 'r') as file:
-        required_columns = [line.strip() for line in file if line.strip()]
+    # Формируем путь к файлу с историей RFE
+    file_path = os.path.join(
+        project_root, 
+        "utils", 
+        "best_feature", 
+        f"rfe_metrics_history_{id_product}.csv"
+    )
     
-    return required_columns
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"Файл не найден: {file_path}")
+    
+    try:
+        df = pd.read_csv(file_path)
+        if 'dropped_feature' not in df.columns:
+            raise ValueError(f"Колонка 'dropped_feature' не найдена в файле {file_path}")
+        
+        dropped_features = df['dropped_feature'].dropna().astype(str).tolist()
+        
+        return dropped_features[-500:]
+        
+    except Exception as e:
+        raise Exception(f"Ошибка при чтении файла {file_path}: {str(e)}")

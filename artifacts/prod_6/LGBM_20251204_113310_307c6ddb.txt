@@ -1,0 +1,44 @@
+==================================================
+ЭТАП 1: ЧТЕНИЕ ДАННЫХ
+==================================================
+Размер исходных данных: (1051557, 35)
+Колонки: ['feature_944', 'feature_296', 'feature_1029', 'feature_311', 'feature_294', 'feature_297', 'feature_298', 'feature_951', 'feature_299', 'feature_300', 'feature_307', 'feature_301', 'feature_947', 'feature_945', 'feature_942', 'feature_1002', 'feature_1003', 'feature_396', 'feature_1020', 'feature_969', 'feature_941', 'feature_525', 'feature_970', 'feature_904', 'feature_437', 'feature_943', 'feature_939', 'feature_448', 'feature_293', 'feature_384', 'timestamp', 'user_id', 'product_id', 'is_sold', 'year_month']
+Размер train: (63323, 30)
+Размер OOT: (15311, 30)
+Категориальные фичи (14): ['feature_944', 'feature_296', 'feature_1029', 'feature_294', 'feature_298', 'feature_299', 'feature_300', 'feature_307', 'feature_301', 'feature_945', 'feature_1002', 'feature_969', 'feature_525', 'feature_904']
+Числовые фичи (16): ['feature_311', 'feature_297', 'feature_951', 'feature_947', 'feature_942', 'feature_1003', 'feature_396', 'feature_1020', 'feature_941', 'feature_970', 'feature_437', 'feature_943', 'feature_939', 'feature_448', 'feature_293', 'feature_384']
+Кодирование завершено. Smoothing: 0.3
+Лучший ROC-AUC: 0.6316
+Лучшие параметры:
+  n_estimators: 200
+  learning_rate: 0.026000059117302653
+  num_leaves: 90
+  max_depth: 4
+  min_child_samples: 90
+  subsample: 0.6
+  colsample_bytree: 1.0
+  reg_alpha: 0.08916674715636537
+  reg_lambda: 6.143857495033091e-07
+Кодирование для финальной модели завершено
+Модель обучена. Количество деревьев: 200
+{
+  "roc_auc": 0.7734907640899223,
+  "pr_auc": 0.5826307818060035,
+  "precision@k": {
+    "1": 0.0,
+    "3": 0.18736383442265794,
+    "5": 0.3895424836601307,
+    "10": 0.45917700849118226
+  },
+  "recall@k": {
+    "1": 0.0,
+    "3": 0.013911355548366224,
+    "5": 0.04820446457457134,
+    "10": 0.11371724361048205,
+    "20": 0.2978000647039793
+  }
+}
+
+Дополнительная информация:
+Размер OOT выборки: 15311
+Количество положительных классов в OOT: 6182
