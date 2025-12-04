@@ -2,9 +2,7 @@ from sklearn.metrics import roc_auc_score
 import category_encoders as ce
 from lightgbm import LGBMClassifier
 
-def objective(trial, x_tr, y_tr, x_val, y_val, cat_cols, num_cols):              
-    # 2. smoothing для TargetEncoder
-    smoothing = trial.suggest_float('smoothing', 0.1, 0.9, step=0.1)
+def objective(trial, x_tr_enc, y_tr, x_val_enc, y_val, cat_cols, num_cols):              
     # 3. Параметры LightGBM
     n_estimators = trial.suggest_int('n_estimators', 50, 500, step=50)
     learning_rate = trial.suggest_float('learning_rate', 0.01, 0.3, log=True)
@@ -15,15 +13,6 @@ def objective(trial, x_tr, y_tr, x_val, y_val, cat_cols, num_cols):
     colsample_bytree = trial.suggest_float('colsample_bytree', 0.6, 1.0, step=0.1)
     reg_alpha = trial.suggest_float('reg_alpha', 1e-8, 10.0, log=True)
     reg_lambda = trial.suggest_float('reg_lambda', 1e-8, 10.0, log=True)
-    
-    # Преобразуем категориальные признаки с оптимизируемым smoothing
-    target_encoder = ce.TargetEncoder(cols=cat_cols, smoothing=smoothing)
-    x_tr_enc = target_encoder.fit_transform(x_tr, y_tr)
-    x_val_enc = target_encoder.transform(x_val)
-    
-    # Оставляем числовые
-    x_tr_enc[num_cols] = x_tr[num_cols]
-    x_val_enc[num_cols] = x_val[num_cols]
     
     # Конфигурация модели с оптимизируемыми параметрами
     model = LGBMClassifier(
