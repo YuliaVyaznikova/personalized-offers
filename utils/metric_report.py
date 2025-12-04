@@ -1,3 +1,5 @@
+import os
+import json
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import (
@@ -7,7 +9,9 @@ from sklearn.metrics import (
     precision_recall_curve
 )
 
-def metric_report(y_true, y_pred, ks=(1, 3, 5, 10, 20)):
+def metric_report(y_true, y_pred, ks=(1, 3, 5, 10, 20), output_dir="metrics_output"):
+    os.makedirs(output_dir, exist_ok=True)
+
     y_true = np.array(y_true)
     y_pred = np.array(y_pred)
 
@@ -36,10 +40,9 @@ def metric_report(y_true, y_pred, ks=(1, 3, 5, 10, 20)):
             precision_at_k[str(k)] = y_top.mean()
 
         if k <= 20:
-            recall_at_k[str(k)] = (
-                y_top.sum() / total_pos if total_pos > 0 else 0
-            )
+            recall_at_k[str(k)] = y_top.sum() / total_pos if total_pos > 0 else 0
 
+    
     fpr, tpr, _ = roc_curve(y_true, y_pred)
 
     plt.figure(figsize=(6, 5))
@@ -50,8 +53,10 @@ def metric_report(y_true, y_pred, ks=(1, 3, 5, 10, 20)):
     plt.title("ROC Curve")
     plt.grid(True)
     plt.legend(loc="lower right")
-    plt.show()
+    plt.savefig(os.path.join(output_dir, "roc_curve.png"), dpi=200)
+    plt.close()
 
+  
     precision, recall, _ = precision_recall_curve(y_true, y_pred)
 
     plt.figure(figsize=(6, 5))
@@ -61,11 +66,18 @@ def metric_report(y_true, y_pred, ks=(1, 3, 5, 10, 20)):
     plt.title("Precision-Recall Curve")
     plt.grid(True)
     plt.legend(loc="lower left")
-    plt.show()
+    plt.savefig(os.path.join(output_dir, "pr_curve.png"), dpi=200)
+    plt.close()
 
-    return {
+    
+    metrics = {
         "roc_auc": roc_auc,
         "pr_auc": pr_auc,
         "precision@k": precision_at_k,
         "recall@k": recall_at_k
     }
+
+    with open(os.path.join(output_dir, "metrics.txt"), "w") as f:
+        f.write(json.dumps(metrics, indent=4))
+
+    return metrics
