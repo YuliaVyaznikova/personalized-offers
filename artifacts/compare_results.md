@@ -17,3 +17,61 @@
 | 17 | 0.7934 | 0.1888 | -      | -      | 0.7623 | 0.1813 |
 
 ---
+
+### Product 0
+- LAMA PR: ![PR](./prod_0/auto_ml/pr_curve_0.png)
+- LAMA ROC: ![ROC](./prod_0/auto_ml/roc_curve_0.png)
+
+### Product 1
+- LAMA PR: ![PR](./prod_1/auto_ml/pr_curve_1.png)
+- LAMA ROC: ![ROC](./prod_1/auto_ml/roc_curve_1.png)
+
+### Product 2
+- LAMA PR: ![PR](./prod_2/auto_ml/pr_curve_2.png)
+- LAMA ROC: ![ROC](./prod_2/auto_ml/roc_curve_2.png)
+
+### Product 4
+- LAMA PR: ![PR](./prod_4/auto_ml/pr_curve_4.png)
+- LAMA ROC: ![ROC](./prod_4/auto_ml/roc_curve_4.png)
+
+### Product 5
+- LAMA PR: ![PR](./prod_5/auto_ml/pr_curve_5.png)
+- LAMA ROC: ![ROC](./prod_5/auto_ml/roc_curve_5.png)
+
+### Product 6
+- CatBoost PR: ![PR](./prod_6/catboost/catboost%20pr.png)
+- CatBoost ROC: ![ROC](./prod_6/catboost/catboost%20roc.jpg)
+- LAMA PR: ![PR](./prod_6/auto_ml/pr_curve_6.png)
+- LAMA ROC: ![ROC](./prod_6/auto_ml/roc_curve_6.png)
+
+### Product 7
+- LAMA PR: ![PR](./prod_7/auto_ml/pr_curve_7.png)
+- LAMA ROC: ![ROC](./prod_7/auto_ml/roc_curve_7.png)
+
+### Product 9
+- LAMA PR: ![PR](./prod_9/auto_ml/pr_curve_9.png)
+- LAMA ROC: ![ROC](./prod_9/auto_ml/roc_curve_9.png)
+
+### Product 10
+- LAMA PR: ![PR](./prod_10/auto_ml/pr_curve_10.png)
+- LAMA ROC: ![ROC](./prod_10/auto_ml/roc_curve_10.png)
+
+### Product 11
+- LAMA PR: ![PR](./prod_11/auto_ml/pr_curve_11.png)
+- LAMA ROC: ![ROC](./prod_11/auto_ml/roc_curve_11.png)
+
+### Product 13
+- LAMA PR: ![PR](./prod_13/auto_ml/pr_curve_13.png)
+- LAMA ROC: ![ROC](./prod_13/auto_ml/roc_curve_13.png)
+
+### Product 15
+- LAMA PR: ![PR](./prod_15/auto_ml/pr_curve_15.png)
+- LAMA ROC: ![ROC](./prod_15/auto_ml/roc_curve_15.png)
+
+### Product 16
+- LAMA PR: ![PR](./prod_16/auto_ml/pr_curve_16.png)
+- LAMA ROC: ![ROC](./prod_16/auto_ml/roc_curve_16.png)
+
+### Product 17
+- LAMA PR: ![PR](./prod_17/auto_ml/pr_curve_17.png)
+- LAMA ROC: ![ROC](./prod_17/auto_ml/roc_curve_17.png)
