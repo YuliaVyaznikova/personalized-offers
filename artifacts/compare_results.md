@@ -16,64 +16,135 @@
 | 16 | 0.6086 | 0.1309 | -      | -      | 0.6741 | 0.1431 | 7.64% |
 | 17 | 0.7934 | 0.1888 | -      | -      | 0.7623 | 0.1813 | 6.92% |
 
-Final products id: 0, 1, 2, 4, 5, 6
+
+**Final products id: 0, 1, 2, 4, 5, 6**
+
 
 ---
 
-### Product 0
-- LAMA PR: ![PR](./prod_0/auto_ml/pr_curve_0.png)
-- LAMA ROC: ![ROC](./prod_0/auto_ml/roc_curve_0.png)
+<h3>Product 0</h3>
+<table>
+  <tr>
+    <td><img src="./prod_0/auto_ml/pr_curve_0.png" width="400" /></td>
+    <td><img src="./prod_0/auto_ml/roc_curve_0.png" width="400" /></td>
+  </tr>
+</table>
 
-### Product 1
-- LAMA PR: ![PR](./prod_1/auto_ml/pr_curve_1.png)
-- LAMA ROC: ![ROC](./prod_1/auto_ml/roc_curve_1.png)
+<h3>Product 1</h3>
+<table>
+  <tr>
+    <td><img src="./prod_1/auto_ml/pr_curve_1.png" width="400" /></td>
+    <td><img src="./prod_1/auto_ml/roc_curve_1.png" width="400" /></td>
+  </tr>
+</table>
 
-### Product 2
-- LAMA PR: ![PR](./prod_2/auto_ml/pr_curve_2.png)
-- LAMA ROC: ![ROC](./prod_2/auto_ml/roc_curve_2.png)
+<h3>Product 2</h3>
+<table>
+  <tr>
+    <td><img src="./prod_2/auto_ml/pr_curve_2.png" width="400" /></td>
+    <td><img src="./prod_2/auto_ml/roc_curve_2.png" width="400" /></td>
+  </tr>
+</table>
 
-### Product 4
-- LAMA PR: ![PR](./prod_4/auto_ml/pr_curve_4.png)
-- LAMA ROC: ![ROC](./prod_4/auto_ml/roc_curve_4.png)
+<h3>Product 4</h3>
+<table>
+  <tr>
+    <td><img src="./prod_4/auto_ml/pr_curve_4.png" width="400" /></td>
+    <td><img src="./prod_4/auto_ml/roc_curve_4.png" width="400" /></td>
+  </tr>
+</table>
 
-### Product 5
-- LAMA PR: ![PR](./prod_5/auto_ml/pr_curve_5.png)
-- LAMA ROC: ![ROC](./prod_5/auto_ml/roc_curve_5.png)
+<h3>Product 5</h3>
+<table>
+  <tr>
+    <td><img src="./prod_5/auto_ml/pr_curve_5.png" width="400" /></td>
+    <td><img src="./prod_5/auto_ml/roc_curve_5.png" width="400" /></td>
+  </tr>
+</table>
 
-### Product 6
-- CatBoost PR: ![PR](./prod_6/catboost/catboost%20pr.png)
-- CatBoost ROC: ![ROC](./prod_6/catboost/catboost%20roc.jpg)
-- LAMA PR: ![PR](./prod_6/auto_ml/pr_curve_6.png)
-- LAMA ROC: ![ROC](./prod_6/auto_ml/roc_curve_6.png)
+<h3>Product 6</h3>
+<table>
+  <thead>
+    <tr>
+      <th align="left">Model</th>
+      <th>PR</th>
+      <th>ROC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>CatBoost</td>
+      <td><img src="./prod_6/catboost/catboost%20pr.png" width="400" /></td>
+      <td><img src="./prod_6/catboost/catboost%20roc.jpg" width="400" /></td>
+    </tr>
+    <tr>
+      <td>LightAutoML</td>
+      <td><img src="./prod_6/auto_ml/pr_curve_6.png" width="400" /></td>
+      <td><img src="./prod_6/auto_ml/roc_curve_6.png" width="400" /></td>
+    </tr>
+  </tbody>
+</table>
 
-### Product 7
-- LAMA PR: ![PR](./prod_7/auto_ml/pr_curve_7.png)
-- LAMA ROC: ![ROC](./prod_7/auto_ml/roc_curve_7.png)
+<h3>Product 7</h3>
+<table>
+  <tr>
+    <td><img src="./prod_7/auto_ml/pr_curve_7.png" width="400" /></td>
+    <td><img src="./prod_7/auto_ml/roc_curve_7.png" width="400" /></td>
+  </tr>
+</table>
 
-### Product 9
-- LAMA PR: ![PR](./prod_9/auto_ml/pr_curve_9.png)
-- LAMA ROC: ![ROC](./prod_9/auto_ml/roc_curve_9.png)
+<h3>Product 9</h3>
+<table>
+  <tr>
+    <td><img src="./prod_9/auto_ml/pr_curve_9.png" width="400" /></td>
+    <td><img src="./prod_9/auto_ml/roc_curve_9.png" width="400" /></td>
+  </tr>
+</table>
 
-### Product 10
-- LAMA PR: ![PR](./prod_10/auto_ml/pr_curve_10.png)
-- LAMA ROC: ![ROC](./prod_10/auto_ml/roc_curve_10.png)
+<h3>Product 10</h3>
+<table>
+  <tr>
+    <td><img src="./prod_10/auto_ml/pr_curve_10.png" width="400" /></td>
+    <td><img src="./prod_10/auto_ml/roc_curve_10.png" width="400" /></td>
+  </tr>
+</table>
 
-### Product 11
-- LAMA PR: ![PR](./prod_11/auto_ml/pr_curve_11.png)
-- LAMA ROC: ![ROC](./prod_11/auto_ml/roc_curve_11.png)
+<h3>Product 11</h3>
+<table>
+  <tr>
+    <td><img src="./prod_11/auto_ml/pr_curve_11.png" width="400" /></td>
+    <td><img src="./prod_11/auto_ml/roc_curve_11.png" width="400" /></td>
+  </tr>
+</table>
 
-### Product 13
-- LAMA PR: ![PR](./prod_13/auto_ml/pr_curve_13.png)
-- LAMA ROC: ![ROC](./prod_13/auto_ml/roc_curve_13.png)
+<h3>Product 13</h3>
+<table>
+  <tr>
+    <td><img src="./prod_13/auto_ml/pr_curve_13.png" width="400" /></td>
+    <td><img src="./prod_13/auto_ml/roc_curve_13.png" width="400" /></td>
+  </tr>
+</table>
 
-### Product 15
-- LAMA PR: ![PR](./prod_15/auto_ml/pr_curve_15.png)
-- LAMA ROC: ![ROC](./prod_15/auto_ml/roc_curve_15.png)
+<h3>Product 15</h3>
+<table>
+  <tr>
+    <td><img src="./prod_15/auto_ml/pr_curve_15.png" width="400" /></td>
+    <td><img src="./prod_15/auto_ml/roc_curve_15.png" width="400" /></td>
+  </tr>
+</table>
 
-### Product 16
-- LAMA PR: ![PR](./prod_16/auto_ml/pr_curve_16.png)
-- LAMA ROC: ![ROC](./prod_16/auto_ml/roc_curve_16.png)
+<h3>Product 16</h3>
+<table>
+  <tr>
+    <td><img src="./prod_16/auto_ml/pr_curve_16.png" width="400" /></td>
+    <td><img src="./prod_16/auto_ml/roc_curve_16.png" width="400" /></td>
+  </tr>
+</table>
 
-### Product 17
-- LAMA PR: ![PR](./prod_17/auto_ml/pr_curve_17.png)
-- LAMA ROC: ![ROC](./prod_17/auto_ml/roc_curve_17.png)
+<h3>Product 17</h3>
+<table>
+  <tr>
+    <td><img src="./prod_17/auto_ml/pr_curve_17.png" width="400" /></td>
+    <td><img src="./prod_17/auto_ml/roc_curve_17.png" width="400" /></td>
+  </tr>
+</table>
