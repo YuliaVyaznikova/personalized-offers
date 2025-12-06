@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 
 
 def target_constructor(df, id_product):

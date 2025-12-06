@@ -40,11 +40,7 @@ def process_incremental(file_path, product_id):
         # Очистка памяти после каждого батча
         del df_batch
         gc.collect()
-        
-
-        #if i % 20 == 0:
-        #    print(f"Обработано {(i+1)*batch_size:,} строк...")
-    
+            
     # Объединяем результаты
     if result_chunks:
         result = pd.concat(result_chunks, ignore_index=True)
@@ -79,7 +75,7 @@ def read_rc(id_product):
         
         dropped_features = df['dropped_feature'].dropna().astype(str).tolist()
         
-        return dropped_features[-500:]
+        return dropped_features[-200:]
         
     except Exception as e:
         raise Exception(f"Ошибка при чтении файла {file_path}: {str(e)}")
