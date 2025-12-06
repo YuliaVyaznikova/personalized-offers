@@ -16,6 +16,7 @@ from metric_report import metric_report # type: ignore
 from optunaizer_LGBM import objective # type: ignore
 from out_file import write_to_file # type: ignore
 from out_file import parse_args # type: ignore
+from calib import calib_rep # type: ignore
 
 class Pipeline:
     def __init__(self, product_id, n_trials, threshold):
@@ -79,7 +80,7 @@ class Pipeline:
         
         cat_cols = data['cat_cols']
         num_cols = data['num_cols']
-        
+
         if stage == 'train':
             # Создание и обучение энкодера
             self.encoder = ce.TargetEncoder(cols=cat_cols, smoothing=smoothing)
@@ -87,7 +88,6 @@ class Pipeline:
             # Кодирование train
             x_tr_enc = self.encoder.fit_transform(data['x_tr'], data['y_tr'])
             x_val_enc = self.encoder.transform(data['x_val'])
-            
             # Восстановление числовых колонок
             x_tr_enc[num_cols] = data['x_tr'][num_cols]
             x_val_enc[num_cols] = data['x_val'][num_cols]
@@ -100,6 +100,13 @@ class Pipeline:
             }
         
         elif stage == 'final':
+            # Кодирование train
+            x_tr_enc = self.encoder.fit_transform(data['x_tr'], data['y_tr'])
+            x_val_enc = self.encoder.transform(data['x_val'])
+            # Восстановление числовых колонок
+            x_tr_enc[num_cols] = data['x_tr'][num_cols]
+            x_val_enc[num_cols] = data['x_val'][num_cols]
+            
             # Кодирование final train и OOT
             x_train_enc = self.encoder.fit_transform(data['x_train'], data['y_train'])
             x_oot_enc = self.encoder.transform(data['x_oot'])
@@ -112,7 +119,8 @@ class Pipeline:
             
             return {
                 'x_train': x_train_enc, 'y_train': data['y_train'],
-                'x_oot': x_oot_enc, 'y_oot': data['y_oot']
+                'x_oot': x_oot_enc, 'y_oot': data['y_oot'],
+                'x_val': x_val_enc, 'y_val': data['y_val']
             }
     
     def tune(self, data):
@@ -123,19 +131,18 @@ class Pipeline:
             study_name='lgbm_optimization',
             sampler=optuna.samplers.TPESampler(seed=42)
         )
-        
+
         # Запуск оптимизации
         study.optimize(
             lambda trial: objective(
                 trial, 
                 data['x_tr'], data['y_tr'], 
                 data['x_val'], data['y_val'],
-                data['cat_cols'], data['num_cols']
             ), 
             n_trials=self.n_trials, 
             show_progress_bar=True
         )
-        
+
         # Сохранение лучших параметров
         self.best_params = study.best_params
         
@@ -145,7 +152,7 @@ class Pipeline:
             write_to_file(self.filepath, f"  {key}: {value}")
         
         return self.best_params
-    
+
     def fit(self, data, params):
         """Обучение финальной модели"""
         
@@ -161,12 +168,12 @@ class Pipeline:
             reg_alpha=params['reg_alpha'],
             reg_lambda=params['reg_lambda'],
             random_state=42,
-            verbose=-1
+            verbose=-1,
         )
         
         # Обучение модели
         self.model.fit(data['x_train'], data['y_train'])
-        
+
         write_to_file(self.filepath, f"Модель обучена. Количество деревьев: {params['n_estimators']}")
         
         return self.model
@@ -176,9 +183,21 @@ class Pipeline:
         
         # Предсказания
         y_pred_proba = self.model.predict_proba(data['x_oot'])[:, 1]
+        y_pred_val = self.model.predict_proba(data['x_val'])[:, 1]
+
+        prob_platt, prob_iso, prob_beta = calib_rep(y_pred_proba, data['y_oot'], y_pred_val, data['y_val'], self.product_id)
         
         # Генерация отчета
         report = metric_report(data['y_oot'], y_pred_proba)
+        write_to_file(self.filepath, report)
+
+        report = metric_report(data['y_oot'], prob_platt)
+        write_to_file(self.filepath, report)
+
+        report = metric_report(data['y_oot'], prob_iso)
+        write_to_file(self.filepath, report)
+
+        report = metric_report(data['y_oot'], prob_beta)
         write_to_file(self.filepath, report)
         
         # Дополнительная информация
@@ -199,7 +218,6 @@ class Pipeline:
             
             # 3. Кодирование для тюнинга
             self.encode(data, stage='train', smoothing=0.3)
-            
             # 4. Оптимизация гиперпараметров
             best_params = self.tune(data)  # Используем оригинальные данные для энкодера внутри objective
             
@@ -209,7 +227,6 @@ class Pipeline:
                 stage='final', 
                 smoothing=best_params.get('smoothing', 0.3)
             )
-            
             # 6. Обучение финальной модели
             model = self.fit(encoded_data_final, best_params)
             
