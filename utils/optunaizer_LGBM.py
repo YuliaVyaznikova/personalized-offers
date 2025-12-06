@@ -1,8 +1,7 @@
 from sklearn.metrics import roc_auc_score
-import category_encoders as ce
 from lightgbm import LGBMClassifier
 
-def objective(trial, x_tr_enc, y_tr, x_val_enc, y_val, cat_cols, num_cols):              
+def objective(trial, x_tr_enc, y_tr, x_val_enc, y_val):              
     # 3. Параметры LightGBM
     n_estimators = trial.suggest_int('n_estimators', 50, 500, step=50)
     learning_rate = trial.suggest_float('learning_rate', 0.01, 0.3, log=True)
