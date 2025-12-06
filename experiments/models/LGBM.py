@@ -42,27 +42,13 @@ class Pipeline:
         """Разделение данных и выбор фичей"""
         
         # Разделение на train и OOT
-        x_train, y_train, x_oot, y_oot = target_constructor(df, self.product_id)
-        
-        # Создание валидационного набора
-        df_train_combined = x_train.copy()
-        df_train_combined['is_sold'] = y_train
-        x_tr, y_tr, x_val, y_val = target_constructor(df_train_combined, self.product_id)
-        
-        # Удаление служебных колонок
-        drop_cols = ['timestamp', 'user_id', 'product_id', 'year_month']
-        
-        x_tr = x_tr.drop(drop_cols, axis=1)
-        x_val = x_val.drop(drop_cols, axis=1)
-        x_train = x_train.drop(drop_cols, axis=1)
-        x_oot = x_oot.drop(drop_cols, axis=1)
-        
+        x_tr, y_tr, x_val, y_val, x_train, y_train, x_oot, y_oot = target_constructor(df, self.product_id)
         # Определение типов фичей
         _, cat_cols = type_of_feature(df, self.threshold)
-        cat_cols = cat_cols[:-5]  # Удаление последних 5 колонок
-        num_cols = [col for col in x_train.columns if col not in cat_cols]
+        cat_cols = cat_cols[:-3]
+        num_cols = [col for col in x_tr.columns if col not in cat_cols]
         
-        write_to_file(self.filepath, f"Размер train: {x_train.shape}")
+        write_to_file(self.filepath, f"Размер train: {x_tr.shape}")
         write_to_file(self.filepath, f"Размер OOT: {x_oot.shape}")
         write_to_file(self.filepath, f"Категориальные фичи ({len(cat_cols)}): {cat_cols}")
         write_to_file(self.filepath, f"Числовые фичи ({len(num_cols)}): {num_cols}")

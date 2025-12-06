@@ -46,7 +46,7 @@ def calib_rep(prob, y_oot, prob_valid, y_valid, prod_id):
 
 def score(prob, y_oot, prod_id, method):
     print("="*50)
-    write_to_file(f"calibrate_info_{prod_id}", "="*50)
+    write_to_file(f"../../artifacts/calibrate_info_{prod_id}", "="*50)
     print(method)
     write_to_file(f"calibrate_info_{prod_id}", method)
     print(f"Brier score - {brier_score_loss(y_oot, prob)}")
@@ -55,7 +55,7 @@ def score(prob, y_oot, prod_id, method):
     write_to_file(f"calibrate_info_{prod_id}", f"Log los - {log_loss(y_oot, prob)}")
     plot_calibration(prob, y_oot, method)
 
-def plot_calibration(prob, y, method, bins=10):
+def plot_calibration(prob, y, method, bins=5):
     prob = np.asarray(prob)
     y = np.asarray(y)
 
