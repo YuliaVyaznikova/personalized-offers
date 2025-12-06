@@ -10,21 +10,32 @@ from sklearn.isotonic import IsotonicRegression
 import numpy as np
 import pandas as pd
 
+def log_scling(preds):
+    train_preds_mean = -4
+    train_preds_std = 1
+    scale_mean = 674
+    scale_std = 88
+    standard_predict = -(np.log(preds) - train_preds_mean) / train_preds_std
+    scaled_predict = np.clip(standard_predict * scale_std + scale_mean, 0, 1000)
+    return scaled_predict
+
 def calib_rep(prob, y_oot, prob_valid, y_valid, prod_id):
     # --- 1. Platt Scaling ---
+    prob_s = prob#log_scling(prob)
+    prob_valid_s = prob_valid#log_scling(prob_valid)
     lr = LogisticRegression()
-    lr.fit(prob_valid.reshape(-1, 1), y_valid)
-    prob_platt = lr.predict_proba(prob.reshape(-1, 1))[:, 1]
+    lr.fit(prob_valid_s.reshape(-1, 1), y_valid)
+    prob_platt = lr.predict_proba(prob_s.reshape(-1, 1))[:, 1]
 
     # --- 2. Isotonic Regression ---
     iso = IsotonicRegression(out_of_bounds="clip")
-    iso.fit(prob_valid, y_valid)
-    prob_iso = iso.transform(prob)
+    iso.fit(prob_valid_s, y_valid)
+    prob_iso = iso.transform(prob_s)
 
     # --- 3. Beta Calibration ---
     beta = BetaCalibration()
-    beta.fit(prob_valid, y_valid)
-    prob_beta = beta.predict(prob)
+    beta.fit(prob_valid_s, y_valid)
+    prob_beta = beta.predict(prob_s)
 
     score(prob, y_oot, prod_id, "raw_score")
     score(prob_platt, y_oot, prod_id, "platt")
@@ -44,7 +55,7 @@ def score(prob, y_oot, prod_id, method):
     write_to_file(f"calibrate_info_{prod_id}", f"Log los - {log_loss(y_oot, prob)}")
     plot_calibration(prob, y_oot, method)
 
-def plot_calibration(prob, y, method, bins=100):
+def plot_calibration(prob, y, method, bins=10):
     prob = np.asarray(prob)
     y = np.asarray(y)
 
