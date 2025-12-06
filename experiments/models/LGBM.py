@@ -190,15 +190,6 @@ class Pipeline:
         # Генерация отчета
         report = metric_report(data['y_oot'], y_pred_proba)
         write_to_file(self.filepath, report)
-
-        report = metric_report(data['y_oot'], prob_platt)
-        write_to_file(self.filepath, report)
-
-        report = metric_report(data['y_oot'], prob_iso)
-        write_to_file(self.filepath, report)
-
-        report = metric_report(data['y_oot'], prob_beta)
-        write_to_file(self.filepath, report)
         
         # Дополнительная информация
         write_to_file(self.filepath, "\nДополнительная информация:")

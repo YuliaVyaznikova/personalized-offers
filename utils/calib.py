@@ -1,6 +1,5 @@
 import numpy as np
 from sklearn.metrics import brier_score_loss, log_loss
-from sklearn.calibration import calibration_curve
 import matplotlib.pyplot as plt
 
 from out_file import write_to_file
@@ -9,7 +8,7 @@ from betacal import BetaCalibration
 from sklearn.linear_model import LogisticRegression
 from sklearn.isotonic import IsotonicRegression
 import numpy as np
-
+import pandas as pd
 
 def calib_rep(prob, y_oot, prob_valid, y_valid, prod_id):
     # --- 1. Platt Scaling ---
@@ -45,40 +44,42 @@ def score(prob, y_oot, prod_id, method):
     write_to_file(f"calibrate_info_{prod_id}", f"Log los - {log_loss(y_oot, prob)}")
     plot_calibration(prob, y_oot, method)
 
-def plot_calibration(prob, y, method, bins=10):
+def plot_calibration(prob, y, method, bins=100):
     prob = np.asarray(prob)
     y = np.asarray(y)
 
     fig, ax = plt.subplots(1, 2, figsize=(14, 6))
 
-    # --- 1. Диаграмма калибровки ---
-    frac_pos, mean_pred = calibration_curve(y, prob, n_bins=bins, strategy='uniform')
-    ax[0].plot(mean_pred, frac_pos, "o-", label="Модель")
-    ax[0].plot([0, 1], [0, 1], "--", color="gray", label="Медиана")
-
-    # --- 1a. Среднее истинных меток в каждом бине ---
-    bin_edges = np.linspace(0, 1, bins + 1)
+    # --- 1. Диаграмма калибровки по квантилям ---
+    quantile_edges = np.quantile(prob, np.linspace(0, 1, bins + 1))
     bin_means = []
+    bin_centers = []
+
     for i in range(bins):
-        mask = (prob >= bin_edges[i]) & (prob < bin_edges[i+1])
+        mask = (prob >= quantile_edges[i]) & (prob < quantile_edges[i+1]) if i < bins-1 else (prob >= quantile_edges[i]) & (prob <= quantile_edges[i+1])
         if mask.sum() > 0:
             bin_means.append(y[mask].mean())
+            bin_centers.append(prob[mask].mean())
         else:
             bin_means.append(np.nan)
-    ax[0].plot((bin_edges[:-1] + bin_edges[1:]) / 2, bin_means, "x-", color="black", label="Среднее истинное значение")
+            bin_centers.append((quantile_edges[i]+quantile_edges[i+1])/2)
 
-    ax[0].set_title("Диаграмма калибровки " + method)
-    ax[0].set_xlabel("Предсказанная вероятность")
+    ax[0].plot(bin_centers, bin_means, "o-", color="blue", label="Квантильная калибровка")
+    ax[0].plot([0, 1], [0, 1], "--", color="gray", label="Идеальная калибровка")
+
+    ax[0].set_title("Диаграмма калибровки по квантилям " + method)
+    ax[0].set_xlabel("Средняя предсказанная вероятность в квантиле")
     ax[0].set_ylabel("Фактическая частота")
     ax[0].legend()
     ax[0].grid(True)
 
-    # --- 2. Гистограмма вероятностей (шаг 0.1) ---
-    bins_hist = np.arange(0, 1.1, 0.1)
-    ax[1].hist(prob, bins=bins_hist, edgecolor="black")
-    ax[1].set_title("Распределение предсказанных вероятностей " + method)
-    ax[1].set_xlabel("Вероятность (шаг 0.1)")
-    ax[1].set_ylabel("Количество объектов")
+    # --- 2. Гистограмма средних истинных меток по квантилям ---
+    ax[1].bar(range(bins), bin_means, width=0.8, edgecolor='black')
+    ax[1].set_xticks(range(bins))
+    ax[1].set_xticklabels([f"{int(i*100/bins)}-{int((i+1)*100/bins)}%" for i in range(bins)])
+    ax[1].set_title("Доля истинных меток по квантилям " + method)
+    ax[1].set_xlabel("Квантиль")
+    ax[1].set_ylabel("Доля единиц")
     ax[1].grid(True)
 
     plt.tight_layout()
