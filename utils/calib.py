@@ -8,7 +8,6 @@ from betacal import BetaCalibration
 from sklearn.linear_model import LogisticRegression
 from sklearn.isotonic import IsotonicRegression
 import numpy as np
-import pandas as pd
 
 def log_scling(preds):
     train_preds_mean = -4

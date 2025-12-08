@@ -5,6 +5,7 @@ import os
 from datetime import datetime
 from lightgbm import LGBMClassifier
 import optuna
+import pickle
 import category_encoders as ce
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..', 'utils'))
@@ -24,10 +25,13 @@ class Pipeline:
         self.n_trials = n_trials
         self.threshold = threshold
         self.filepath = f'../../artifacts/prod_{product_id}/LGBM_{datetime.now().strftime("%Y%m%d_%H%M%S")}_{str(uuid.uuid4())[:8]}.txt'
+        self.model_dir = f'../../artifacts/prod_{product_id}/LGBM'
+
         
         self.encoder = None
         self.model = None
         self.best_params = None
+        self.feature_names = None
         
     def read(self):        
         path = kagglehub.dataset_download("alexxl/sbol-dataset")
@@ -207,7 +211,10 @@ class Pipeline:
             # 6. Обучение финальной модели
             model = self.fit(encoded_data_final, best_params)
             
-            # 7. Формирование отчета
+            # 7 Сохранение модели
+            model_dir = self.save_model(encoded_data_final)
+
+            #8 Формирование отчета
             report = self.report(encoded_data_final)
             
             return {
@@ -215,12 +222,32 @@ class Pipeline:
                 'encoder': self.encoder,
                 'params': best_params,
                 'report': report,
-                'filepath': self.filepath
+                'filepath': self.filepath,
+                'model_dir': model_dir
             }
             
         except Exception as e:
             write_to_file(self.filepath, f"\nОШИБКА В ПАЙПЛАЙНЕ: {str(e)}")
             raise
+    def save_model(self, data=None):
+        """Сохранение модели, энкодера и метаданных"""
+        
+        # Создаем директорию для модели
+        os.makedirs(self.model_dir, exist_ok=True)
+        
+        # Сохраняем модель LightGBM
+        model_path = os.path.join(self.model_dir, 'model.pkl')
+        with open(model_path, 'wb') as f:
+            pickle.dump(self.model, f)
+        write_to_file(self.filepath, f"Модель сохранена в: {model_path}")
+        
+        # Сохраняем энкодер
+        encoder_path = os.path.join(self.model_dir, 'encoder.pkl')
+        with open(encoder_path, 'wb') as f:
+            pickle.dump(self.encoder, f)
+        write_to_file(self.filepath, f"Энкодер сохранен в: {encoder_path}")
+                
+        return self.model_dir
 
 # Парсинг аргументов
 args = parse_args()

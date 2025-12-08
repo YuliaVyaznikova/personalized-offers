@@ -1,0 +1,43 @@
+Размер исходных данных: (1051557, 205)
+Колонки: ['feature_903', 'feature_245', 'feature_243', 'feature_918', 'feature_273', 'feature_956', 'feature_260', 'feature_922', 'feature_285', 'feature_265', 'feature_920', 'feature_945', 'feature_886', 'feature_254', 'feature_268', 'feature_281', 'feature_232', 'feature_923', 'feature_927', 'feature_909', 'feature_893', 'feature_1013', 'feature_244', 'feature_242', 'feature_270', 'feature_905', 'feature_233', 'feature_896', 'feature_925', 'feature_250', 'feature_875', 'feature_248', 'feature_288', 'feature_251', 'feature_966', 'feature_899', 'feature_259', 'feature_894', 'feature_224', 'feature_968', 'feature_231', 'feature_888', 'feature_986', 'feature_272', 'feature_1102', 'feature_874', 'feature_880', 'feature_912', 'feature_294', 'feature_257', 'feature_1005', 'feature_262', 'feature_246', 'feature_879', 'feature_221', 'feature_213', 'feature_890', 'feature_878', 'feature_898', 'feature_256', 'feature_1017', 'feature_877', 'feature_239', 'feature_219', 'feature_214', 'feature_238', 'feature_222', 'feature_210', 'feature_895', 'feature_1084', 'feature_872', 'feature_1012', 'feature_332', 'feature_234', 'feature_252', 'feature_207', 'feature_211', 'feature_223', 'feature_225', 'feature_237', 'feature_236', 'feature_892', 'feature_196', 'feature_209', 'feature_197', 'feature_230', 'feature_199', 'feature_885', 'feature_915', 'feature_229', 'feature_870', 'feature_216', 'feature_198', 'feature_202', 'feature_200', 'feature_204', 'feature_931', 'feature_215', 'feature_1066', 'feature_313', 'feature_205', 'feature_227', 'feature_957', 'feature_218', 'feature_883', 'feature_881', 'feature_869', 'feature_208', 'feature_897', 'feature_972', 'feature_613', 'feature_228', 'feature_433', 'feature_1272', 'feature_1028', 'feature_217', 'feature_876', 'feature_889', 'feature_212', 'feature_1027', 'feature_1190', 'feature_1047', 'feature_1014', 'feature_1003', 'feature_1087', 'feature_1099', 'feature_1142', 'feature_253', 'feature_309', 'feature_403', 'feature_364', 'feature_1164', 'feature_350', 'feature_887', 'feature_346', 'feature_933', 'feature_836', 'feature_258', 'feature_963', 'feature_926', 'feature_1250', 'feature_226', 'feature_206', 'feature_391', 'feature_501', 'feature_842', 'feature_581', 'feature_873', 'feature_987', 'feature_1051', 'feature_524', 'feature_1234', 'feature_1092', 'feature_284', 'feature_201', 'feature_1283', 'feature_940', 'feature_1284', 'feature_1075', 'feature_1208', 'feature_970', 'feature_240', 'feature_369', 'feature_235', 'feature_572', 'feature_633', 'feature_1018', 'feature_266', 'feature_436', 'feature_1036', 'feature_344', 'feature_1091', 'feature_1020', 'feature_396', 'feature_220', 'feature_600', 'feature_1188', 'feature_387', 'feature_541', 'feature_921', 'feature_582', 'feature_919', 'feature_904', 'feature_293', 'feature_437', 'feature_653', 'feature_763', 'feature_339', 'feature_1109', 'feature_569', 'feature_465', 'feature_839', 'feature_649', 'feature_341', 'feature_929', 'feature_1113', 'feature_525', 'feature_440', 'feature_195', 'feature_466', 'timestamp', 'user_id', 'product_id', 'is_sold', 'year_month']
+Размер train: (81876, 200)
+Размер OOT: (20085, 200)
+Категориальные фичи (59): ['feature_243', 'feature_273', 'feature_956', 'feature_922', 'feature_920', 'feature_945', 'feature_886', 'feature_254', 'feature_893', 'feature_1013', 'feature_244', 'feature_242', 'feature_270', 'feature_896', 'feature_875', 'feature_248', 'feature_259', 'feature_894', 'feature_968', 'feature_231', 'feature_888', 'feature_986', 'feature_272', 'feature_874', 'feature_880', 'feature_912', 'feature_294', 'feature_257', 'feature_262', 'feature_221', 'feature_890', 'feature_898', 'feature_877', 'feature_239', 'feature_219', 'feature_214', 'feature_234', 'feature_207', 'feature_211', 'feature_223', 'feature_225', 'feature_236', 'feature_196', 'feature_197', 'feature_199', 'feature_885', 'feature_198', 'feature_200', 'feature_204', 'feature_613', 'feature_433', 'feature_524', 'feature_940', 'feature_1284', 'feature_344', 'feature_541', 'feature_904', 'feature_929', 'feature_525']
+Числовые фичи (141): ['feature_903', 'feature_245', 'feature_918', 'feature_260', 'feature_285', 'feature_265', 'feature_268', 'feature_281', 'feature_232', 'feature_923', 'feature_927', 'feature_909', 'feature_905', 'feature_233', 'feature_925', 'feature_250', 'feature_288', 'feature_251', 'feature_966', 'feature_899', 'feature_224', 'feature_1102', 'feature_1005', 'feature_246', 'feature_879', 'feature_213', 'feature_878', 'feature_256', 'feature_1017', 'feature_238', 'feature_222', 'feature_210', 'feature_895', 'feature_1084', 'feature_872', 'feature_1012', 'feature_332', 'feature_252', 'feature_237', 'feature_892', 'feature_209', 'feature_230', 'feature_915', 'feature_229', 'feature_870', 'feature_216', 'feature_202', 'feature_931', 'feature_215', 'feature_1066', 'feature_313', 'feature_205', 'feature_227', 'feature_957', 'feature_218', 'feature_883', 'feature_881', 'feature_869', 'feature_208', 'feature_897', 'feature_972', 'feature_228', 'feature_1272', 'feature_1028', 'feature_217', 'feature_876', 'feature_889', 'feature_212', 'feature_1027', 'feature_1190', 'feature_1047', 'feature_1014', 'feature_1003', 'feature_1087', 'feature_1099', 'feature_1142', 'feature_253', 'feature_309', 'feature_403', 'feature_364', 'feature_1164', 'feature_350', 'feature_887', 'feature_346', 'feature_933', 'feature_836', 'feature_258', 'feature_963', 'feature_926', 'feature_1250', 'feature_226', 'feature_206', 'feature_391', 'feature_501', 'feature_842', 'feature_581', 'feature_873', 'feature_987', 'feature_1051', 'feature_1234', 'feature_1092', 'feature_284', 'feature_201', 'feature_1283', 'feature_1075', 'feature_1208', 'feature_970', 'feature_240', 'feature_369', 'feature_235', 'feature_572', 'feature_633', 'feature_1018', 'feature_266', 'feature_436', 'feature_1036', 'feature_1091', 'feature_1020', 'feature_396', 'feature_220', 'feature_600', 'feature_1188', 'feature_387', 'feature_921', 'feature_582', 'feature_919', 'feature_293', 'feature_437', 'feature_653', 'feature_763', 'feature_339', 'feature_1109', 'feature_569', 'feature_465', 'feature_839', 'feature_649', 'feature_341', 'feature_1113', 'feature_440', 'feature_195', 'feature_466']
+Кодирование завершено. Smoothing: 0.3
+Лучший ROC-AUC: 0.8222
+Лучшие параметры:
+  n_estimators: 500
+  learning_rate: 0.010425658055299656
+  num_leaves: 40
+  max_depth: 7
+  min_child_samples: 50
+  subsample: 1.0
+  colsample_bytree: 0.9
+  reg_alpha: 5.799449092292779e-05
+  reg_lambda: 8.150052631433422
+Кодирование для финальной модели завершено
+Модель обучена. Количество деревьев: 500
+Модель сохранена в: ../../artifacts/prod_2/LGBM/model.pkl
+Энкодер сохранен в: ../../artifacts/prod_2/LGBM/encoder.pkl
+{
+  "roc_auc": 0.8246971947378189,
+  "pr_auc": 0.247881051713001,
+  "precision@k": {
+    "1": 1.0,
+    "3": 0.3637873754152824,
+    "5": 0.2968127490039841,
+    "10": 0.23256972111553784
+  },
+  "recall@k": {
+    "1": 0.0009910802775024777,
+    "3": 0.21704658077304262,
+    "5": 0.29534192269573833,
+    "10": 0.4628344895936571,
+    "20": 0.6461843409316155
+  }
+}
+
+Дополнительная информация:
+Размер OOT выборки: 20085
+Количество положительных классов в OOT: 1009
