@@ -151,11 +151,19 @@ def add_product_id():
     """
     Самый простой вариант
     """
+    # Сначала читаем prod_0
     df_full = pd.read_csv("./../artifacts/prod_0/LGBM/scores.csv")
     df_full['product_id'] = 0
-    for i in range [1, 2, 4, 5, 6]:
-        df = pd.read_csv(pd.read_csv(f"./../artifacts/prod_{i}/LGBM/scores.csv"))
+    
+    # Обратите внимание: range(1, 2, 4, 5, 6) не сработает, range() принимает только 1-3 аргумента
+    # Лучше использовать список напрямую
+    for i in [1, 2, 4, 5, 6]:
+        # Убрал лишний pd.read_csv
+        df = pd.read_csv(f"./../artifacts/prod_{i}/LGBM/scores.csv")
         df['product_id'] = i
-        df_full = pd.concat([df, df_full], ignore_index=True)
-
+        df_full = pd.concat([df_full, df], ignore_index=True)  # Важно: df_full должен быть первым
+    
     df_full.to_csv("all.csv", index=False)
+    print(f"✅ Готово! Сохранено {len(df_full)} строк")
+
+add_product_id()
