@@ -7,7 +7,7 @@ from out_file import parse_args # type: ignore
 from target_constructor import target_constructor # type: ignore
 from type_of_feature import type_of_feature # type: ignore
 
-def predict_and_save_with_user_id(df_features: pd.DataFrame,
+def predict_and_save(df_features: pd.DataFrame,
                                   model_path: str,
                                   calibrator_path: str,
                                   encoder_path: str,
@@ -68,7 +68,7 @@ args = parse_args()
 model_path = f"./../artifacts/prod_{args.product_id}/LGBM/model.pkl"
 output_csv = f"./../artifacts/prod_{args.product_id}/LGBM/scores.csv"
 calibrator_path = f"./../artifacts/prod_{args.product_id}/LGBM/calibrator.pkl"
-encoder_path = f"./../artifacts/prod_{args.product_id}/LGBM/encoder.csv"
+encoder_path = f"./../artifacts/prod_{args.product_id}/LGBM/encoder.pkl"
 
 path = kagglehub.dataset_download("alexxl/sbol-dataset")
 df = process_incremental(path + '/sbolpro_merged_final.pqt', args.product_id)

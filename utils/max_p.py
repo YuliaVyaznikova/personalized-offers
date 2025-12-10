@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-def add_calc_columns_budget_only_unique_users(df: pd.DataFrame, budget: float):
+def add_calc_columns_budget_only(df: pd.DataFrame, budget: float):
     df = df.copy()
 
     # prib = profit * prob / price
@@ -74,7 +74,7 @@ def add_calc_columns_budget_only_unique_users(df: pd.DataFrame, budget: float):
 
     return summary
 
-def add_calc_columns_unique_users(df: pd.DataFrame, constraints: dict, budget: float):
+def add_calc_columns(df: pd.DataFrame, constraints: dict, budget: float):
     df = df.copy()
 
     # prib = profit * prob / price
@@ -146,42 +146,3 @@ def add_calc_columns_unique_users(df: pd.DataFrame, constraints: dict, budget: f
     }
 
     return summary
-
-
-# --------------------------
-# Генерация DataFrame
-# --------------------------
-np.random.seed(42)  # для воспроизводимости
-
-n_rows = 15311
-types = ["email", "sms", "call"]
-
-# фиксированные profit и price для каждого типа
-profit_dict = {"email": 10000, "sms": 15000, "call": 30000}
-price_dict  = {"email": 50, "sms": 60, "call": 120}
-
-# случайный выбор типа для каждой строки
-type_com = np.random.choice(types, size=n_rows)
-
-# profit и price в зависимости от типа
-profit = [profit_dict[t] for t in type_com]
-price  = [price_dict[t] for t in type_com]
-
-# случайная вероятность успеха
-prob = np.random.uniform(0.1, 1.0, size=n_rows)
-
-# создаём DataFrame
-df = pd.DataFrame({
-    "type_comunication": type_com,
-    "profit": profit,
-    "price": price,
-    "prob": prob
-})
-
-# --------------------------
-# Ограничения и бюджет
-# --------------------------
-constraints = {"email": 50000, "sms": 400000, "call": 3000}
-budget = 1_000_000  # например 1 млн
-print(add_calc_columns_budget_only(df, budget))
-print(add_calc_columns(df, constraints, budget))
