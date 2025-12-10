@@ -146,3 +146,16 @@ def add_calc_columns(df: pd.DataFrame, constraints: dict, budget: float):
     }
 
     return summary
+
+def add_product_id():
+    """
+    Самый простой вариант
+    """
+    df_full = pd.read_csv("./../artifacts/prod_0/LGBM/scores.csv")
+    df_full['product_id'] = 0
+    for i in range [1, 2, 4, 5, 6]:
+        df = pd.read_csv(pd.read_csv(f"./../artifacts/prod_{i}/LGBM/scores.csv"))
+        df['product_id'] = i
+        df_full = pd.concat([df, df_full], ignore_index=True)
+
+    df_full.to_csv("all.csv", index=False)

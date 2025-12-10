@@ -43,18 +43,17 @@ def predict_and_save(df_features: pd.DataFrame,
 
     # 5. Применяем энкодер к категориальным колонкам
     if categorical_cols:
-        df_encoded[categorical_cols] = encoder.transform(df_encoded[categorical_cols])
+        df_encoded = encoder.transform(df_encoded)
 
     # 6. Предсказываем вероятности модели
     prob_raw = model.predict_proba(df_encoded)[:, 1]
 
     # 7. Применяем калибратор
-    prob_calibrated = calibrator.predict_proba(df_encoded)[:, 1]
+    prob_calibrated = calibrator.predict(prob_raw)
 
     # 8. Формируем итоговый DataFrame
     df_out = pd.DataFrame({
         "user_id": user_id,
-        "chan_type": df_features["feature_969"],
         "score": prob_calibrated
     })
 
