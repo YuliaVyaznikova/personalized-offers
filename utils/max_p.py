@@ -165,5 +165,5 @@ def add_product_id():
     
     df_full.to_csv("all.csv", index=False)
     print(f"✅ Готово! Сохранено {len(df_full)} строк")
-
 add_product_id()
+
