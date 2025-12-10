@@ -67,7 +67,6 @@ class Pipeline:
     
     def encode(self, data, stage='train', smoothing=0.3):
         """Кодирование категориальных признаков"""
-        
         cat_cols = data['cat_cols']
         num_cols = data['num_cols']
 
@@ -175,7 +174,10 @@ class Pipeline:
         y_pred_proba = self.model.predict_proba(data['x_oot'])[:, 1]
         y_pred_val = self.model.predict_proba(data['x_val'])[:, 1]
 
-        self.calibrator = calib_rep(y_pred_proba, data['y_oot'], y_pred_val, data['y_val'], self.product_id) 
+        calibrator_path = os.path.join(self.model_dir, 'calibrator.pkl')
+        with open(calibrator_path, 'wb') as f:
+            pickle.dump(calib_rep(y_pred_proba, data['y_oot'], y_pred_val, data['y_val'], self.product_id) , f)
+
         
         # Генерация отчета
         report = metric_report(data['y_oot'], y_pred_proba)
@@ -246,12 +248,6 @@ class Pipeline:
         with open(encoder_path, 'wb') as f:
             pickle.dump(self.encoder, f)
         write_to_file(self.filepath, f"Энкодер сохранен в: {encoder_path}")
-
-         # Сохраняем калибратор
-        calibrator_path = os.path.join(self.model_dir, 'calibrator.pkl')
-        with open(calibrator_path, 'wb') as f:
-            pickle.dump(self.calibrator, f)
-        write_to_file(self.filepath, f"Калибратор сохранен в: {encoder_path}")
                 
         return self.model_dir
 
