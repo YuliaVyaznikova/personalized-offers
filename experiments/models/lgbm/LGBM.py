@@ -8,7 +8,7 @@ import optuna
 import pickle
 import category_encoders as ce
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../..', 'utils'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../..', 'utils'))
 
 from target_constructor import target_constructor # type: ignore
 from comp_db_dwld import process_incremental # type: ignore
@@ -24,10 +24,10 @@ class Pipeline:
         self.product_id = product_id
         self.n_trials = n_trials
         self.threshold = threshold
-        self.filepath = f'../../artifacts/prod_{product_id}/LGBM_{datetime.now().strftime("%Y%m%d_%H%M%S")}_{str(uuid.uuid4())[:8]}.txt'
-        self.model_dir = f'../../artifacts/prod_{product_id}/LGBM'
+        self.filepath = f'../../../artifacts/prod_{product_id}/LGBM_{datetime.now().strftime("%Y%m%d_%H%M%S")}_{str(uuid.uuid4())[:8]}.txt'
+        self.model_dir = f'../../../artifacts/prod_{product_id}/LGBM'
 
-        
+        self.calibrator = None
         self.encoder = None
         self.model = None
         self.best_params = None
@@ -175,7 +175,7 @@ class Pipeline:
         y_pred_proba = self.model.predict_proba(data['x_oot'])[:, 1]
         y_pred_val = self.model.predict_proba(data['x_val'])[:, 1]
 
-        prob_platt, prob_iso, prob_beta = calib_rep(y_pred_proba, data['y_oot'], y_pred_val, data['y_val'], self.product_id)
+        self.calibrator = calib_rep(y_pred_proba, data['y_oot'], y_pred_val, data['y_val'], self.product_id) 
         
         # Генерация отчета
         report = metric_report(data['y_oot'], y_pred_proba)
@@ -246,6 +246,12 @@ class Pipeline:
         with open(encoder_path, 'wb') as f:
             pickle.dump(self.encoder, f)
         write_to_file(self.filepath, f"Энкодер сохранен в: {encoder_path}")
+
+         # Сохраняем калибратор
+        calibrator_path = os.path.join(self.model_dir, 'calibrator.pkl')
+        with open(calibrator_path, 'wb') as f:
+            pickle.dump(self.calibrator, f)
+        write_to_file(self.filepath, f"Калибратор сохранен в: {encoder_path}")
                 
         return self.model_dir
 

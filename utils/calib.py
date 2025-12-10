@@ -8,6 +8,7 @@ from betacal import BetaCalibration
 from sklearn.linear_model import LogisticRegression
 from sklearn.isotonic import IsotonicRegression
 import numpy as np
+
 def log_scling(preds):
     train_preds_mean = -4
     train_preds_std = 1
@@ -39,7 +40,7 @@ def calib_rep(prob, y_oot, prob_valid, y_valid, prod_id):
     score(prob_platt, y_oot, prod_id, "platt")
     score(prob_iso, y_oot, prod_id, "isotonic")
     score(prob_beta, y_oot, prod_id, "beta")
-    return prob_platt, prob_iso, prob_beta
+    return beta
 
 
 def score(prob, y_oot, prod_id, method):
