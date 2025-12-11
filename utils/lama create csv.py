@@ -68,7 +68,7 @@ if __name__ == "__main__":
     df = pd.concat(df_list, ignore_index=True)
     df = df.drop_duplicates(subset=['user_id'], keep='last')
 
-    for product_id in [one_id]:
+    for product_id in products:
         print(f'Start product {product_id}')
         top_feats = load_top_features(product_id)
         df_product = df[['user_id'] + top_feats]
