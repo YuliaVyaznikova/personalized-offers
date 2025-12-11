@@ -42,7 +42,7 @@ def load_top_features(prod_id, k=200):
 
 
 def read_model(model_name, product_id):
-    PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+    PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "./.."))
     model_filename = f"{model_name}_{product_id}.pkl"
     model_path = os.path.join(PROJECT_ROOT, model_filename)
 
