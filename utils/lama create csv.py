@@ -29,7 +29,7 @@ def read(product_id):
 # === 2. Топ-200 признаков по важности ===
 def load_top_features(prod_id, k=200):
     # Путь к корню проекта (personalized-offers-LGBM)
-    PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+    PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "./.."))
 
     imp_path = os.path.join(PROJECT_ROOT, "utils", 'best_feature', f"rfe_metrics_history_{prod_id}.csv")
 
