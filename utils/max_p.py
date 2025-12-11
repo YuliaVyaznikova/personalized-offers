@@ -155,8 +155,6 @@ def add_product_id():
     df_full = pd.read_csv("./../artifacts/prod_0/LGBM/scores.csv")
     df_full['product_id'] = 0
     
-    # Обратите внимание: range(1, 2, 4, 5, 6) не сработает, range() принимает только 1-3 аргумента
-    # Лучше использовать список напрямую
     for i in [1, 2, 4, 5, 6]:
         # Убрал лишний pd.read_csv
         df = pd.read_csv(f"./../artifacts/prod_{i}/LGBM/scores.csv")
