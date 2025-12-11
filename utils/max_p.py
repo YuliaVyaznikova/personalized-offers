@@ -1,151 +1,5 @@
 import pandas as pd
-import numpy as np
-
-def add_calc_columns_budget_only(df: pd.DataFrame, budget: float):
-    df = df.copy()
-
-    # prib = profit * prob / price
-    df["prib_per_price"] = df["profit"] * df["prob"] / df["price"]
-    df["prib"] = df["profit"] * df["prob"]
-
-    # сортировка по прибыльности
-    df = df.sort_values("prib_per_price", ascending=False).reset_index(drop=True)
-
-    # подготовка колонок
-    df["total_price"] = 0.0
-    df["total_prib"] = 0.0
-    df["itog"] = 0.0
-
-    # создаём счётчики по типам
-    types = df["type_comunication"].unique()
-    for t in types:
-        df[f"count_{t}"] = 0
-
-    # внутренние переменные
-    cumulative_price = 0.0
-    cumulative_prib = 0.0
-    type_counters = {t: 0 for t in types}
-
-    # словарь для отслеживания использованных user_id по продуктам
-    used_users = dict()  # {product_id: set(user_id)}
-
-    # проходим по строкам
-    for i, row in df.iterrows():
-        t = row["type_comunication"]
-        price = row["price"]
-        prib = row["prib"]
-        user = row["user_id"]
-        product = row["product_id"]
-
-        # инициализация множества для продукта
-        if product not in used_users:
-            used_users[product] = set()
-
-        # проверяем, был ли уже user_id для этого продукта
-        if user in used_users[product]:
-            # пропускаем строку
-            pass
-        elif cumulative_price + price > budget:
-            # превышение бюджета
-            pass
-        else:
-            # строка подходит, учитываем
-            cumulative_price += price
-            cumulative_prib += prib
-            type_counters[t] += 1
-            used_users[product].add(user)
-
-        # запись cumulative значений
-        df.at[i, "total_price"] = cumulative_price
-        df.at[i, "total_prib"] = cumulative_prib
-        df.at[i, "itog"] = cumulative_prib / cumulative_price if cumulative_price > 0 else 0
-
-        # запись счетчиков типа
-        for tt in types:
-            df.at[i, f"count_{tt}"] = type_counters[tt]
-
-    # итоговый отчёт
-    summary = {
-        "spent_money": cumulative_price,
-        "take_money": cumulative_prib,
-        "profit": cumulative_prib - cumulative_price,
-        "used_by_type": type_counters,
-    }
-
-    return summary
-
-def add_calc_columns(df: pd.DataFrame, constraints: dict, budget: float):
-    df = df.copy()
-
-    # prib = profit * prob / price
-    df["prib_per_price"] = df["profit"] * df["prob"] / df["price"]
-    df["prib"] = df["profit"] * df["prob"]
-
-    # сортировка по прибыльности
-    df = df.sort_values("prib_per_price", ascending=False).reset_index(drop=True)
-
-    # подготовка колонок
-    df["total_price"] = 0.0
-    df["total_prib"] = 0.0
-    df["itog"] = 0.0
-
-    # создаём счётчики по типам
-    types = df["type_comunication"].unique()
-    for t in types:
-        df[f"count_{t}"] = 0
-
-    # внутренние переменные
-    cumulative_price = 0.0
-    cumulative_prib = 0.0
-    type_counters = {t: 0 for t in types}
-
-    # словарь для отслеживания использованных user_id по продуктам
-    used_users = dict()  # {product_id: set(user_id)}
-
-    # проходим построчно
-    for i, row in df.iterrows():
-        t = row["type_comunication"]
-        price = row["price"]
-        prib = row["prib"]
-        user = row["user_id"]
-        product = row["product_id"]
-
-        # инициализация множества для продукта
-        if product not in used_users:
-            used_users[product] = set()
-
-        # проверка ограничений
-        if type_counters[t] >= constraints.get(t, float("inf")):
-            pass
-        elif cumulative_price + price > budget:
-            pass
-        elif user in used_users[product]:
-            pass
-        else:
-            # строка подходит
-            type_counters[t] += 1
-            cumulative_price += price
-            cumulative_prib += prib
-            used_users[product].add(user)
-
-        # запись cumulative значений
-        df.at[i, "total_price"] = cumulative_price
-        df.at[i, "total_prib"] = cumulative_prib
-        df.at[i, "itog"] = cumulative_prib / cumulative_price if cumulative_price > 0 else 0
-
-        # запись счетчиков типа
-        for tt in types:
-            df.at[i, f"count_{tt}"] = type_counters[tt]
-
-    # итоговый отчёт
-    summary = {
-        "spent_money": cumulative_price,
-        "take_money": cumulative_prib,
-        "profit": cumulative_prib - cumulative_price,
-        "used_by_type": type_counters,
-    }
-
-    return summary
+from typing import Dict, List
 
 def add_product_id():
     """
@@ -163,5 +17,113 @@ def add_product_id():
     
     df_full.to_csv("all.csv", index=False)
     print(f"✅ Готово! Сохранено {len(df_full)} строк")
-add_product_id()
 
+def compute_weighted_scores(price_map: Dict[int, float]) -> List[float]:
+    # Загружаем CSV
+    df = pd.read_csv("all.csv")
+
+    # Применяем price_map
+    df['price'] = df['product_id'].map(price_map)
+
+    # Вычисляем price * score
+    df['weighted_score'] = df['price'] * df['score']
+
+    return df['weighted_score'].tolist()
+
+
+def knapsack_products_with_limits(product_options, budget, comm_limits):
+    n = len(product_options)
+    num_comms = len(comm_limits)
+    
+    prev = {(0, tuple([0]*num_comms)): (0, [])}
+
+    for i in range(n):
+        curr = {}
+        options = product_options[i]
+        
+        for (spent, usage), (profit, selected) in prev.items():
+            for variant_idx, (cost, new_dohod, comm_idx) in enumerate(options):
+                new_spent = spent + cost
+                if new_spent > budget:
+                    continue
+                
+                usage_list = list(usage)
+                if comm_idx > 0:
+                    usage_list[comm_idx-1] += 1
+                    if usage_list[comm_idx-1] > comm_limits[comm_idx-1]:
+                        continue
+                
+                new_usage = tuple(usage_list)
+                new_profit = profit + new_dohod
+                new_selected = selected + [variant_idx]
+                
+                key = (new_spent, new_usage)
+                if key not in curr or curr[key][0] < new_profit:
+                    curr[key] = (new_profit, new_selected)
+        
+        prev = curr
+
+    best_profit, best_selected = max(prev.values(), key=lambda x: x[0])
+    return best_profit, best_selected
+
+
+def build_product_options(weighted_scores, communication_options):
+    """
+    Для каждого продукта формирует список вариантов (price, new_dohod), 
+    где каждый вариант соответствует применению одной из коммуникаций.
+
+    :param weighted_scores: список весов продукта (weighted_score)
+    :param communication_options: список кортежей (cost, prob, limit) для каждой коммуникации
+    :return: список списков [(price, new_dohod), ...] для каждого продукта
+    """
+    product_options = []
+
+    for s in weighted_scores:
+        options_for_product = [(0, 0)]  # вариант "не применять коммуникацию"
+        
+        for cost, prob, _limit in communication_options:
+            new_dohod = s * prob
+            options_for_product.append((cost, new_dohod))
+        
+        product_options.append(options_for_product)
+
+    return product_options
+
+
+price_map = {
+    0: 15807.9,
+    1: 21368,
+    2: 256000,
+    6: 1000,
+    4: 20000,
+    5: 90000,
+}
+weighted_scores = compute_weighted_scores(price_map)
+
+communication_options = [
+    (0, 0, 0),        # вариант "не использовать"
+    (35, 0.02, 1),     # (стоимость, вероятность, comm_idx)
+    (2, 0.03, 2),
+    (5, 0.015, 3),
+    (1500, 0.07, 4),
+    (120, 0.01, 5),
+    (80, 0.005, 6),
+
+]
+
+product_options = build_product_options(weighted_scores, communication_options)
+
+product_options = []
+for s in weighted_scores:
+    opts = []
+    for cost, prob, comm_idx in communication_options:
+        new_dohod = s * prob
+        opts.append((cost, new_dohod, comm_idx))
+    product_options.append(opts)
+
+budget = 1000000
+comm_limits = [2000, 5000, 1200, 80, 600, 900]  # первая коммуникация можно использовать 1 раз, вторая — 2 раза
+
+best_profit, best_variants = knapsack_products_with_limits(product_options, budget, comm_limits)
+print("Максимальная прибыль:", best_profit)
+print("Выбранные варианты для каждого продукта:", best_variants)
